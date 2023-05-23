@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Keyboard aliases
+keyboard_crkbd="crkbd/rev1"
+
+# Get script directory and set it as working directory
+script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+qmk_dir=$script_dir/qmk_firmware
+cd $script_dir
+
+# Update git submodules
+git submodule update --init --recursive
+
+# Read parameter ("keyboard/keymap") into two separate variables
+IFS=/ read -r keyboard keymap <<< $1
+
+# Validate
+if [[ -z $keyboard || -z $keymap || ! -d "$script_dir/$keyboard/$keymap" ]]; then
+  echo "Invalid keyboard or keymap."
+  exit 1
+fi
+
+# Create symlink into qmk_firmware submodule
+link_src="$script_dir/$keyboard/$keymap"
+link_dst="$qmk_dir/keyboards/$keyboard/keymaps/$keymap"
+ln -sf $link_src $link_dst
+
+# Compile the firmware
+target="${keyboard}_${keymap}"
+make TARGET=$target -C $qmk_dir -j1 "$(eval "echo \${keyboard_$keyboard}"):$keymap"
+
+# Cleanup
+rm -rf $link_dst
+
+# Copy the firmware
+cp $qmk_dir/$target.hex $script_dir/

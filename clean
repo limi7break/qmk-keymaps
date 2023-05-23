@@ -1,0 +1,7 @@
+#!/bin/bash
+
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+rm -rf $script_dir/*.hex
+rm -rf $script_dir/qmk_firmware/.build
+rm -rf $script_dir/qmk_firmware/*.hex
