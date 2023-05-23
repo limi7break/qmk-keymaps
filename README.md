@@ -18,6 +18,15 @@ crkbd
     └── rules.mk
 ```
 
+## Prerequisites
+
+-   Install the QMK CLI and setup QMK:
+
+    ```bash
+    python3 -m pip install --user qmk
+    qmk setup
+    ```
+
 ## Usage
 
 -   Clone the repository:
