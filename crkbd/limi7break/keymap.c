@@ -9,14 +9,8 @@ enum layers {
 };
 
 enum keycodes {
-    // Arrow combos (e.g. =>)
-    KC_LTEQ = SAFE_RANGE,
-    KC_EQLT,
-    KC_GTEQ,
-    KC_EQGT,
-
     // Acute accents
-    IT_AACT,
+    IT_AACT = SAFE_RANGE,
     IT_EACT,
     IT_IACT,
     IT_OACT,
@@ -30,12 +24,18 @@ enum keycodes {
     IT_UGRV,
 
     // Euro symbol
-    IT_EURO
+    IT_EURO,
+
+    // Arrow combos (e.g. =>)
+    KC_LTEQ,
+    KC_EQLT,
+    KC_GTEQ,
+    KC_EQGT
 };
 
-#define ADJUST MO(_ADJUST)
 #define SYMBOL MO(_SYMBOL)
 #define NAV MO(_NAV)
+#define ADJUST MO(_ADJUST)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT_split_3x6_3(
@@ -191,3 +191,47 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return true;
     }
 }
+
+#ifdef POINTING_DEVICE_ENABLE
+void pointing_device_init_user(void) {
+    pointing_device_set_cpi(600);
+}
+
+static bool scrolling_and_right_click_mode = false;
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    switch (get_highest_layer(state)) {
+        case _NAV:
+            // Enable scrolling and right click mode on the nav layer
+            scrolling_and_right_click_mode = true;
+            pointing_device_set_cpi(30);
+            break;
+        default:
+            if (scrolling_and_right_click_mode) {
+                scrolling_and_right_click_mode = false;
+                pointing_device_set_cpi(600);
+            }
+            break;
+    }
+    return state;
+}
+
+report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
+    if (mouse_report.buttons & MOUSE_BTN1) {
+        if (scrolling_and_right_click_mode) {
+            mouse_report.buttons &= ~MOUSE_BTN1;
+            mouse_report.buttons |= MOUSE_BTN2;
+            return mouse_report;
+        }
+    } else {
+        mouse_report.buttons &= ~MOUSE_BTN2;
+    }
+    if (scrolling_and_right_click_mode) {
+        mouse_report.h = mouse_report.x;
+        mouse_report.v = mouse_report.y;
+        mouse_report.x = 0;
+        mouse_report.y = 0;
+    }
+    return mouse_report;
+}
+#endif // POINTING_DEVICE_ENABLE
