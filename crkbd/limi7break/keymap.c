@@ -197,36 +197,41 @@ void pointing_device_init_user(void) {
     pointing_device_set_cpi(600);
 }
 
-static bool scrolling_and_right_click_mode = false;
+static bool scrolling = false;
+static enum mouse_buttons tap_is = MOUSE_BTN1;
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     switch (get_highest_layer(state)) {
-        case _NAV:
-            // Enable scrolling and right click mode on the nav layer
-            scrolling_and_right_click_mode = true;
+        case _ADJUST:
+            scrolling = true;
             pointing_device_set_cpi(30);
+            tap_is = MOUSE_BTN3;
+            break;
+        case _NAV:
+            scrolling = true;
+            pointing_device_set_cpi(30);
+            tap_is = MOUSE_BTN2;
             break;
         default:
-            if (scrolling_and_right_click_mode) {
-                scrolling_and_right_click_mode = false;
+            if (scrolling) {
                 pointing_device_set_cpi(600);
             }
-            break;
+            scrolling = false;
+            tap_is = MOUSE_BTN1;
     }
     return state;
 }
 
 report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
     if (mouse_report.buttons & MOUSE_BTN1) {
-        if (scrolling_and_right_click_mode) {
+        if (tap_is != MOUSE_BTN1) {
             mouse_report.buttons &= ~MOUSE_BTN1;
-            mouse_report.buttons |= MOUSE_BTN2;
-            return mouse_report;
+            mouse_report.buttons |= tap_is;
         }
     } else {
-        mouse_report.buttons &= ~MOUSE_BTN2;
+        mouse_report.buttons = 0;
     }
-    if (scrolling_and_right_click_mode) {
+    if (scrolling) {
         mouse_report.h = mouse_report.x;
         mouse_report.v = mouse_report.y;
         mouse_report.x = 0;
