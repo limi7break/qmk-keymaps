@@ -5,7 +5,7 @@ enum layers {
     _QWERTY,
     _SYMBOL,
     _NAV,
-    _ADJUST
+    _MACRO
 };
 
 enum keycodes {
@@ -35,7 +35,7 @@ enum keycodes {
 
 #define SYMBOL MO(_SYMBOL)
 #define NAV MO(_NAV)
-#define ADJUST MO(_ADJUST)
+#define MACRO MO(_MACRO)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT_split_3x6_3(
@@ -56,7 +56,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
         KC_LCTL,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,  KC_ENT,
     //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                            KC_LGUI, KC_LALT, _______,     ADJUST,  KC_SPC, KC_RSFT
+                                            KC_LGUI, KC_LALT, _______,      MACRO,  KC_SPC, KC_RSFT
     ),                                  //`--------------------------'  `--------------------------'
     [_NAV] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------.                    ,-----------------------------------------------------.
@@ -66,9 +66,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
         KC_LCTL, XXXXXXX, XXXXXXX, KC_MSTP, KC_MUTE, KC_MPLY,                      KC_HOME, KC_PGDN, KC_PGUP,  KC_END,  KC_F12,  KC_ENT,
     //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                            KC_LGUI, KC_LALT,  ADJUST,    _______,  KC_SPC, KC_RSFT
+                                            KC_LGUI, KC_LALT,   MACRO,    _______,  KC_SPC, KC_RSFT
     ),                                  //`--------------------------'  `--------------------------'
-    [_ADJUST] = LAYOUT_split_3x6_3(
+    [_MACRO] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------.                    ,-----------------------------------------------------.
          KC_ESC, KC_TILD, XXXXXXX, IT_EGRV, XXXXXXX, XXXXXXX,                      RGB_TOG, IT_UGRV, IT_IGRV, IT_OGRV, XXXXXXX, KC_DEL,
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -202,7 +202,7 @@ static enum mouse_buttons tap_is = MOUSE_BTN1;
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     switch (get_highest_layer(state)) {
-        case _ADJUST:
+        case _MACRO:
             scrolling = true;
             pointing_device_set_cpi(30);
             tap_is = MOUSE_BTN3;
