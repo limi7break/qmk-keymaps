@@ -4,7 +4,7 @@
 enum layers {
     _QWERTY,
     _SYMBOL,
-    _NAV,
+    _FNAV,
     _MACRO
 };
 
@@ -34,7 +34,7 @@ enum keycodes {
 };
 
 #define SYMBOL MO(_SYMBOL)
-#define NAV MO(_NAV)
+#define FNAV MO(_FNAV)
 #define MACRO MO(_MACRO)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -46,7 +46,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
         KC_LCTL,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_ENT,
     //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                            KC_LGUI, KC_LALT,  SYMBOL,        NAV,  KC_SPC, KC_RSFT
+                                            KC_LGUI, KC_LALT,  SYMBOL,        FNAV,  KC_SPC, KC_RSFT
     ),                                  //`--------------------------'  `--------------------------'
     [_SYMBOL] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------.                    ,-----------------------------------------------------.
@@ -58,23 +58,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                             KC_LGUI, KC_LALT, _______,      MACRO,  KC_SPC, KC_RSFT
     ),                                  //`--------------------------'  `--------------------------'
-    [_NAV] = LAYOUT_split_3x6_3(
+    [_FNAV] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-         KC_ESC,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                        KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_DEL,
+         KC_ESC, KC_F9,  KC_F10,  KC_F11,  KC_F12,   XXXXXXX,                      KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT, KC_MPLY,  KC_DEL,
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        KC_LSFT, XXXXXXX, KC_MPRV, KC_VOLU, KC_VOLD, KC_MNXT,                      KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT,  KC_F11,  KC_APP,
+        KC_LSFT, KC_F5,   KC_F6,   KC_F7,   KC_F8,   XXXXXXX,                      KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, KC_MUTE,  KC_APP,
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        KC_LCTL, XXXXXXX, XXXXXXX, KC_MSTP, KC_MUTE, KC_MPLY,                      KC_HOME, KC_PGDN, KC_PGUP,  KC_END,  KC_F12,  KC_ENT,
+        KC_LCTL, KC_F1,   KC_F2,   KC_F3,   KC_F4,   XXXXXXX,                      KC_HOME, KC_PGDN, KC_PGUP,  KC_END, KC_MSTP,  KC_ENT,
     //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                             KC_LGUI, KC_LALT,   MACRO,    _______,  KC_SPC, KC_RSFT
     ),                                  //`--------------------------'  `--------------------------'
     [_MACRO] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-         KC_ESC, KC_TILD, XXXXXXX, IT_EGRV, XXXXXXX, XXXXXXX,                      RGB_TOG, IT_UGRV, IT_IGRV, IT_OGRV, XXXXXXX, KC_DEL,
+         KC_ESC, KC_TILD, KC_PIPE, IT_EGRV, XXXXXXX, XXXXXXX,                      XXXXXXX, IT_UGRV, IT_IGRV, IT_OGRV, XXXXXXX, KC_DEL,
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        KC_LSFT, IT_AGRV, XXXXXXX, IT_EACT, XXXXXXX, XXXXXXX,                      XXXXXXX, IT_UACT, IT_IACT, IT_OACT, KC_EQGT, KC_BSLS,
+        KC_LSFT, IT_AGRV, XXXXXXX, IT_EACT, XXXXXXX, XXXXXXX,                      XXXXXXX, IT_UACT, IT_IACT, IT_OACT, KC_EQGT, XXXXXXX,
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        KC_LCTL, IT_AACT, XXXXXXX, IT_EURO, XXXXXXX, XXXXXXX,                      XXXXXXX, KC_CAPS,  KC_NUM, KC_SCRL, XXXXXXX, KC_ENT,
+        KC_LCTL, IT_AACT, XXXXXXX, IT_EURO, XXXXXXX, XXXXXXX,                      XXXXXXX, KC_CAPS, KC_SCRL,  KC_NUM, RGB_TOG, KC_ENT,
     //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                             KC_LGUI, KC_LALT, _______,    _______,  KC_SPC, KC_RSFT
     )                                   //`--------------------------'  `--------------------------'
@@ -207,7 +207,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             pointing_device_set_cpi(30);
             tap_is = MOUSE_BTN3;
             break;
-        case _NAV:
+        case _FNAV:
             scrolling = true;
             pointing_device_set_cpi(30);
             tap_is = MOUSE_BTN2;
