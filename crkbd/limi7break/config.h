@@ -4,6 +4,10 @@
 #define LAYER_STATE_8BIT
 #define NO_ACTION_ONESHOT
 
+#ifdef COMBO_ENABLE
+    #define COMBO_TERM 40
+#endif // COMBO_ENABLE
+
 #ifdef OLED_ENABLE
     #define OLED_TIMEOUT 0
 #endif // OLED_ENABLE

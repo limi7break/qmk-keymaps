@@ -1,4 +1,5 @@
 EXTRAKEY_ENABLE 	   = yes
+COMBO_ENABLE 		   = yes
 
 OLED_ENABLE            = no
 OLED_DRIVER            = SSD1306
