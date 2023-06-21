@@ -42,3 +42,9 @@ crkbd
     # ./compile <keyboard>/<keymap>
     ./compile crkbd/limi7break
     ```
+
+-   To update the QMK firmware submodule to the latest commit:
+
+    ```bash
+    git submodule update --remote --merge
+    ```

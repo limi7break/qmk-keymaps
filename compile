@@ -9,7 +9,10 @@ qmk_dir=$script_dir/qmk_firmware
 cd $script_dir
 
 # Update git submodules
-git submodule update --init --recursive
+git submodule update --init --recursive --remote
+cd $qmk_dir
+qmk git-submodule
+cd $script_dir
 
 # Read parameter ("keyboard/keymap") into two separate variables
 IFS=/ read -r keyboard keymap <<< $1

@@ -1,5 +1,4 @@
 #include QMK_KEYBOARD_H
-#include <stdio.h>
 
 enum layers {
     _QWERTY,
@@ -26,7 +25,7 @@ enum keycodes {
     // Euro symbol
     IT_EURO,
 
-    // Arrow combos (e.g. =>)
+    // Arrow macros (e.g. =>)
     KC_LTEQ,
     KC_EQLT,
     KC_GTEQ,
@@ -191,6 +190,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return true;
     }
 }
+
+#ifdef COMBO_ENABLE
+enum combos {
+    DF_ESC,
+};
+
+const uint16_t PROGMEM df_combo[] = {KC_D, KC_F, COMBO_END};
+
+combo_t key_combos[] = {
+    [DF_ESC] = COMBO(df_combo, KC_ESC),
+};
+#endif // COMBO_ENABLE
 
 #ifdef POINTING_DEVICE_ENABLE
 void pointing_device_init_user(void) {
